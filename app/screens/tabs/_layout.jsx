@@ -25,6 +25,36 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
+        name="search"
+        options={{
+          title: 'Search',
+          tabBarIcon: () => (
+            <Ionicons name="search-outline" size={24} color="black" />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="add"
+        options={{
+          title: 'Add',
+          tabBarIcon: () => (
+            <Ionicons name="add-outline" size={24} color="black" />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="notification"
+        options={{
+          title: 'Notification',
+          tabBarIcon: () => (
+            <Ionicons name="notifications-outline" size={24} color="black" />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',

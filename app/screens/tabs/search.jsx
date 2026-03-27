@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet } from 'react-native';
 
-export default function ProfileScreen() {
+export default function SearchScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Profiel Pagina</Text>
+      <Text style={styles.title}>Search</Text>
     </View>
   );
 }

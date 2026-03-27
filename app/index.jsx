@@ -1,58 +1,93 @@
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, ImageBackground, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function WelcomeScreen() {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Explore a new world with us</Text>
-      
-      <Pressable 
-        style={styles.button}
-        onPress={() => router.push('/screens/auth/register')}
+    <View style={{ flex: 1 }}>
+      <ImageBackground
+        source={require('../assets/images/offtrack-background.png')}
+        style={styles.backgroundImage}
+        resizeMode="cover"
       >
-        <Text style={styles.buttonText}>Register</Text>
-      </Pressable>
+        <View style={styles.title}>
+          <Image
+            source={require('../assets/images/logo.png')}
+            style={styles.image}
+          />
+          <Text style={styles.text1}>OffTrack</Text>
+        </View>
 
-      <Pressable 
-        style={styles.button}
-        onPress={() => router.replace('/screens/auth/login')}
-      >
-        <Text style={styles.buttonText}>Login</Text>
-      </Pressable>
+        <Text style={styles.welcomeTitle}>Explore a new world with us</Text>
+        <View style={styles.buttonContainer}>
+          <Pressable
+            style={styles.button}
+            onPress={() => router.push('/screens/auth/register')}
+          >
+            <Text style={styles.buttonText}>REGISTER</Text>
+          </Pressable>
+
+          <Pressable
+            style={styles.button}
+            onPress={() => router.replace('/screens/auth/login')}
+          >
+            <Text style={styles.buttonText}>LOGIN</Text>
+          </Pressable>
+        </View>
+      </ImageBackground>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  backgroundImage: {
+    width: '100%',
+    height: '100%',
     flex: 1,
-    backgroundColor: '#0B1A2B',
-    padding: 24,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#F5F7FA',
-    textAlign: 'center',
-    marginBottom: 32,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 80,
+  },
+  image: {
+    width: 50,
+    height: 50,
+  },
+  text1: {
+    fontFamily: 'arial',
+    fontWeight: 'bold',
+    fontSize: 25,
+    letterSpacing: 2,
+  },
+  welcomeTitle: {
+    color: 'white',
+    fontSize: 32,
+    fontWeight: 'bold',
+    width: '80%',
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    gap: '2%',
+    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'flex-end',
+    flex: 1,
+    paddingBottom: 100,
   },
   button: {
-    width: '100%',
-    maxWidth: 320,
-    paddingVertical: 14,
-    paddingHorizontal: 18,
-    borderRadius: 12,
-    backgroundColor: '#2E5F9A',
     alignItems: 'center',
-    marginBottom: 14,
+    width: '100%',
   },
   buttonText: {
-    color: '#F5F7FA',
-    fontSize: 16,
-    fontWeight: '600',
+    padding: 10,
+    backgroundColor: 'black',
+    color: 'white',
+    width: '80%',
+    fontFamily: 'arial',
+    textAlign: 'center',
+    borderRadius: 25,
+    marginTop: 10,
   },
 });

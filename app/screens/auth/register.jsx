@@ -31,12 +31,16 @@ export default function Register() {
                         placeholder='Confirm password'
                     />
 
-                    <Pressable onPress={() => alert('Geklikt!')} style={styles.button}>
+                    <Pressable onPress={() => router.replace('/../screens/tabs/home')} style={styles.button}>
                         <Text style={styles.buttontext}>
                             CREATE ACCOUNT
                         </Text>
                     </Pressable>
-                    <Text style={styles.text2}>Already have an account? Sign in</Text>
+                    <Pressable onPress={() => router.push('/../screens/auth/login')}>
+                        <Text style={styles.text2}>
+                            Already have an account? Sign in
+                        </Text>
+                    </Pressable>
                 </View>
 
             </ImageBackground>

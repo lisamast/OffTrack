@@ -27,12 +27,16 @@ export default function Login() {
                         placeholder='Password'
                     />
 
-                    <Pressable onPress={() => alert('Geklikt!')} style={styles.button}>
+                    <Pressable onPress={() => router.replace('/../screens/tabs/home')} style={styles.button}>
                         <Text style={styles.buttontext}>
                             LOGIN
                         </Text>
                     </Pressable>
-                    <Text style={styles.text2}>Don't have an account? Sign up</Text>
+                    <Pressable onPress={() => router.push('/../screens/auth/register')}>
+                        <Text style={styles.text2}>
+                            Don't have an account? Sign up
+                        </Text>
+                    </Pressable>
                 </View>
 
             </ImageBackground>
@@ -74,7 +78,6 @@ const styles = StyleSheet.create({
         // overflow: 'hidden',
     },
     inputContainer: {
-
         gap: '2%',
         alignItems: 'center',
         width: '100%',
@@ -102,9 +105,9 @@ const styles = StyleSheet.create({
         // overflow: 'hidden',
     },
     text2: {
-        color: 'black',
+        color: 'white',
         textAlign: 'center',
-        textWeight: 'semibold',
+        fontWeight: 'semibold',
         marginTop: 10,
     }
 })
