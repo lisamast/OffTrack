@@ -1,53 +1,99 @@
-import { View, Text, Pressable, ImageBackground, TextInput, StyleSheet, Image } from 'react-native'
+import { View, Text, Pressable, ImageBackground, TextInput, StyleSheet, Image, Alert } from 'react-native'
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 export default function Register() {
     const router = useRouter();
-    return (
-        <View style={{ flex: 1 }}>
-            <ImageBackground
-                source={require('../../../assets/images/offtrack-background1.png')}
-                style={styles.backgroundImage}
-                resizeMode="cover"
-            >
-                <View style={styles.title}>
-                    <Image
-                        source={require('../../../assets/images/logo.png')}
-                        style={styles.image}
-                    />
-                    {<Text style={styles.text1}>OffTrack</Text>}
-                </View>
+    const [formData, setFormData] = useState({
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
 
-                <View style={styles.inputContainer}>
+    const handleChange = (field, value) => {
+        setFormData({
+            ...formData,
+            [field]: value,
+        });
+    };
 
-                    <TextInput style={styles.textInput}
-                        placeholder='Email Adress'
-                    />
+    const handleSubmit = () => {
 
-                    <TextInput style={styles.textInput}
-                        placeholder='Password'
-                    />
+        console.log(formData.password)
+        if (!formData.password.trim() || !formData.confirmPassword.trim() || !formData.email.trim()) {
+            Alert.alert('Fout', 'Vul alle velden in');
+            console.log("vul alle velden in")
+            return;
+        }
 
-                    <TextInput style={styles.textInput}
-                        placeholder='Confirm password'
-                    />
+        if (formData.password === formData.confirmPassword) {
+            router.replace('/../screens/tabs/home');
+        } else {
+            Alert.alert('Wachtwoorden komen niet overeen');
+            console.log("wachtwoorden komen niet overeen")
+        }
 
-                    <Pressable onPress={() => router.replace('/../screens/tabs/home')} style={styles.button}>
-                        <Text style={styles.buttontext}>
-                            CREATE ACCOUNT
-                        </Text>
-                    </Pressable>
-                    <Pressable onPress={() => router.push('/../screens/auth/login')}>
-                        <Text style={styles.text2}>
-                            Already have an account? Sign in
-                        </Text>
-                    </Pressable>
-                </View>
-
-            </ImageBackground>
+    };
 
 
-        </View>
-    )
+
+return (
+    <View style={{ flex: 1 }}>
+        <ImageBackground
+            source={require('../../../assets/images/offtrack-background1.png')}
+            style={styles.backgroundImage}
+            resizeMode="cover"
+        >
+            <View style={styles.title}>
+                <Image
+                    source={require('../../../assets/images/logo.png')}
+                    style={styles.image}
+                />
+                {<Text style={styles.text1}>OffTrack</Text>}
+            </View>
+
+            <View style={styles.inputContainer}>
+
+                <TextInput style={styles.textInput}
+                    placeholder='Email Adress'
+                    keyboardType="email-address"
+                    required
+                    value={formData.email}
+                    onChangeText={(text) => handleChange('email', text)}
+                />
+
+                <TextInput style={styles.textInput}
+                    placeholder='Password'
+                    secureTextEntry
+                    required
+                    value={formData.password}
+                    onChangeText={(text) => handleChange('password', text)}
+                />
+
+                <TextInput style={styles.textInput}
+                    placeholder='Confirm password'
+                    secureTextEntry
+                    required
+                    value={formData.confirmPassword}
+                    onChangeText={(text) => handleChange('confirmPassword', text)}
+                />
+
+                <Pressable onPress={handleSubmit} style={styles.button}>
+                    <Text style={styles.buttontext}>
+                        CREATE ACCOUNT
+                    </Text>
+                </Pressable>
+                <Pressable onPress={() => router.push('/../screens/auth/login')}>
+                    <Text style={styles.text2}>
+                        Already have an account? Sign in
+                    </Text>
+                </Pressable>
+            </View>
+
+        </ImageBackground>
+
+
+    </View>
+)
 }
 const styles = StyleSheet.create({
     backgroundImage: {

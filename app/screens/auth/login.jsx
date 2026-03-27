@@ -1,7 +1,24 @@
 import { View, Text, Pressable, ImageBackground, TextInput, StyleSheet, Image } from 'react-native'
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 export default function Login() {
     const router = useRouter();
+    const [formData, setFormData] = useState({
+        email: '',
+        password: ''
+    });
+
+    const handleChange = (field, value) => {
+        setFormData({
+            ...formData,
+            [field]: value,
+        });
+    };
+
+    const handleSubmit = () => {
+        console.log('Form data:', formData);
+        // Data naar API
+    };
     return (
         <View style={{ flex: 1 }}>
             <ImageBackground
@@ -21,10 +38,18 @@ export default function Login() {
 
                     <TextInput style={styles.textInput}
                         placeholder='Email Adress'
+                        keyboardType="email-address"
+                        required
+                        value={formData.email}
+                        onChangeText={(text) => handleChange('email', text)}
                     />
 
                     <TextInput style={styles.textInput}
                         placeholder='Password'
+                        secureTextEntry
+                        required
+                        value={formData.password}
+                        onChangeText={(text) => handleChange('password', text)}
                     />
 
                     <Pressable onPress={() => router.replace('/../screens/tabs/home')} style={styles.button}>
