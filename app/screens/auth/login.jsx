@@ -16,8 +16,12 @@ export default function Login() {
     };
 
     const handleSubmit = () => {
-        console.log('Form data:', formData);
-        // Data naar API
+        console.log(formData.password)
+        if (!formData.password.trim() || !formData.confirmPassword.trim() || !formData.email.trim()) {
+            Alert.alert('Fout', 'Vul alle velden in');
+            console.log("vul alle velden in")
+            return;
+        }
     };
     return (
         <View style={{ flex: 1 }}>
