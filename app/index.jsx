@@ -19,7 +19,12 @@ export default function WelcomeScreen() {
           <Text style={styles.text1}>OffTrack</Text>
         </View>
 
-        <Text style={styles.welcomeTitle}>Explore a new world with us</Text>
+        <view style={styles.content}>
+          <Text style={styles.welcomeTitle}>
+            Explore a{'\n'}
+            new world {'\n'}
+            with us</Text>
+        </view>
         <View style={styles.buttonContainer}>
           <Pressable
             style={styles.button}
@@ -50,6 +55,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 80,
+    marginLeft: 20,
   },
   image: {
     width: 50,
@@ -61,9 +67,16 @@ const styles = StyleSheet.create({
     fontSize: 25,
     letterSpacing: 2,
   },
+  content: {
+    flex: 1,
+    marginTop: 335,
+    marginLeft: 20,
+    justifyContent: 'flex-end',
+    paddingHorizontal: 20,
+  },
   welcomeTitle: {
     color: 'white',
-    fontSize: 32,
+    fontSize: 45,
     fontWeight: 'bold',
     width: '80%',
     marginBottom: 10,
