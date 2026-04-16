@@ -1,6 +1,8 @@
 import { View, Text, Pressable, ImageBackground, TextInput, StyleSheet, Image, Alert } from 'react-native'
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function Register() {
     const router = useRouter();
     const [formData, setFormData] = useState({
@@ -16,84 +18,89 @@ export default function Register() {
         });
     };
 
-    const handleSubmit = () => {
-
-        console.log(formData.password)
-        if (!formData.password.trim() || !formData.confirmPassword.trim() || !formData.email.trim()) {
+    const handleSubmit = async () => {
+        if (!formData.email.trim() || !formData.password.trim() || !formData.confirmPassword.trim()) {
             Alert.alert('Fout', 'Vul alle velden in');
-            console.log("vul alle velden in")
             return;
         }
 
-        if (formData.password === formData.confirmPassword) {
-            router.replace('/../screens/tabs/home');
-        } else {
+        if (formData.password !== formData.confirmPassword) {
             Alert.alert('Wachtwoorden komen niet overeen');
-            console.log("wachtwoorden komen niet overeen")
+            return;
         }
 
+        const user = {
+            email: formData.email,
+            password: formData.password,
+        };
+
+        try {
+            await AsyncStorage.setItem('user', JSON.stringify(user));
+            router.replace('/screens/auth/login');
+        } catch (error) {
+            console.log('Register error:', error);
+            Alert.alert('Fout', 'Er ging iets mis bij het registreren');
+        }
     };
 
+    return (
+        <View style={{ flex: 1 }}>
+            <ImageBackground
+                source={require('../../../assets/images/offtrack-background1.png')}
+                style={styles.backgroundImage}
+                resizeMode="cover"
+            >
+                <View style={styles.title}>
+                    <Image
+                        source={require('../../../assets/images/logo.png')}
+                        style={styles.image}
+                    />
+                    {<Text style={styles.text1}>OffTrack</Text>}
+                </View>
+
+                <View style={styles.inputContainer}>
+
+                    <TextInput style={styles.textInput}
+                        placeholder='Email Adress'
+                        keyboardType="email-address"
+                        required
+                        value={formData.email}
+                        onChangeText={(text) => handleChange('email', text)}
+                    />
+
+                    <TextInput style={styles.textInput}
+                        placeholder='Password'
+                        secureTextEntry
+                        required
+                        value={formData.password}
+                        onChangeText={(text) => handleChange('password', text)}
+                    />
+
+                    <TextInput style={styles.textInput}
+                        placeholder='Confirm password'
+                        secureTextEntry
+                        required
+                        value={formData.confirmPassword}
+                        onChangeText={(text) => handleChange('confirmPassword', text)}
+                    />
+
+                    <Pressable onPress={handleSubmit} style={styles.button}>
+                        <Text style={styles.buttontext}>
+                            CREATE ACCOUNT
+                        </Text>
+                    </Pressable>
+                    <Pressable onPress={() => router.push('/../screens/auth/login')}>
+                        <Text style={styles.text2}>
+                            Already have an account? Sign in
+                        </Text>
+                    </Pressable>
+                </View>
+
+            </ImageBackground>
 
 
-return (
-    <View style={{ flex: 1 }}>
-        <ImageBackground
-            source={require('../../../assets/images/offtrack-background1.png')}
-            style={styles.backgroundImage}
-            resizeMode="cover"
-        >
-            <View style={styles.title}>
-                <Image
-                    source={require('../../../assets/images/logo.png')}
-                    style={styles.image}
-                />
-                {<Text style={styles.text1}>OffTrack</Text>}
-            </View>
-
-            <View style={styles.inputContainer}>
-
-                <TextInput style={styles.textInput}
-                    placeholder='Email Adress'
-                    keyboardType="email-address"
-                    required
-                    value={formData.email}
-                    onChangeText={(text) => handleChange('email', text)}
-                />
-
-                <TextInput style={styles.textInput}
-                    placeholder='Password'
-                    secureTextEntry
-                    required
-                    value={formData.password}
-                    onChangeText={(text) => handleChange('password', text)}
-                />
-
-                <TextInput style={styles.textInput}
-                    placeholder='Confirm password'
-                    secureTextEntry
-                    required
-                    value={formData.confirmPassword}
-                    onChangeText={(text) => handleChange('confirmPassword', text)}
-                />
-
-                <Pressable onPress={handleSubmit} style={styles.button}>
-                    <Text style={styles.buttontext}>
-                        CREATE ACCOUNT
-                    </Text>
-                </Pressable>
-                <Pressable onPress={() => router.push('/../screens/auth/login')}>
-                    <Text style={styles.text2}>
-                        Already have an account? Sign in
-                    </Text>
-                </Pressable>
-            </View>
-
-        </ImageBackground>
-
-
-    </View>
-)
+        </View>
+    )
 }
 const styles = StyleSheet.create({
     backgroundImage: {

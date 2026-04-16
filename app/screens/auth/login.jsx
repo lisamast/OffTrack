@@ -1,6 +1,8 @@
-import { View, Text, Pressable, ImageBackground, TextInput, StyleSheet, Image } from 'react-native'
+import { View, Text, Pressable, ImageBackground, TextInput, StyleSheet, Image, Alert } from 'react-native'
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function Login() {
     const router = useRouter();
     const [formData, setFormData] = useState({
@@ -15,14 +17,37 @@ export default function Login() {
         });
     };
 
-    const handleSubmit = () => {
-        console.log(formData.password)
-        if (!formData.password.trim() || !formData.confirmPassword.trim() || !formData.email.trim()) {
+    const handleSubmit = async () => {
+        if (!formData.email.trim() || !formData.password.trim()) {
             Alert.alert('Fout', 'Vul alle velden in');
             console.log("vul alle velden in")
             return;
         }
+
+        try {
+            const savedUser = await AsyncStorage.getItem('user');
+
+            if (!savedUser) {
+                Alert.alert('Fout', 'Onjuist emailadres of wachtwoord');
+                return;
+            }
+
+            const parsedUser = JSON.parse(savedUser);
+
+            if (
+                formData.email === parsedUser.email &&
+                formData.password === parsedUser.password
+            ) {
+                router.replace('/../screens/tabs/profile');
+            } else {
+                Alert.alert('Fout', 'Onjuist emailadres of wachtwoord');
+            }
+        } catch (error) {
+            console.error('Fout bij inloggen:', error);
+            Alert.alert('Fout', 'Er is een fout opgetreden bij het inloggen');
+        }
     };
+
     return (
         <View style={{ flex: 1 }}>
             <ImageBackground
@@ -56,7 +81,7 @@ export default function Login() {
                         onChangeText={(text) => handleChange('password', text)}
                     />
 
-                    <Pressable onPress={() => router.replace('/../screens/tabs/home')} style={styles.button}>
+                    <Pressable onPress={handleSubmit} style={styles.button}>
                         <Text style={styles.buttontext}>
                             LOGIN
                         </Text>

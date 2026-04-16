@@ -1,7 +1,27 @@
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ProfileScreen() {
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const savedUser = await AsyncStorage.getItem('user');
+        if (savedUser) {
+          const parsedUser = JSON.parse(savedUser);
+          setUsername(parsedUser.email);
+        }
+      } catch (error) {
+        console.log('Profile error:', error);
+      }
+    };
+
+    loadUser();
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.banner}>
@@ -14,7 +34,7 @@ export default function ProfileScreen() {
 
       <View style={styles.content}>
         <View style={styles.names}>
-          <Text style={styles.name}>Jason van Schaik</Text>
+          <Text style={styles.name}>{username}</Text>
           <Ionicons name="create-outline" size={18} color="#9a9a9a" />
         </View>
 
