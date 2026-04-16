@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function ProfileScreen() {
@@ -29,6 +29,32 @@ export default function ProfileScreen() {
         </View>
 
         <Text style={styles.favoritesTitle}>❤️ My favorites</Text>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.favoritesScroll}
+        >
+          <View style={styles.favoriteCard}>
+            <Image source={require('../../../assets/images/Barcelona.png')} style={styles.favoriteImage} />
+          </View>
+
+          <View style={styles.favoriteCard}>
+            <Image source={require('../../../assets/images/NewYork.png')} style={styles.favoriteImage} />
+          </View>
+
+          <View style={styles.favoriteCard}>
+            <Image source={require('../../../assets/images/Tokyo.png')} style={styles.favoriteImage} />
+          </View>
+
+          <View style={styles.favoriteCard}>
+            <Image source={require('../../../assets/images/Rome.png')} style={styles.favoriteImage} />
+          </View>
+
+          <View style={styles.favoriteCard}>
+            <Image source={require('../../../assets/images/Chongqing.png')} style={styles.favoriteImage} />
+          </View>
+        </ScrollView>
       </View>
 
     </View >
@@ -130,20 +156,28 @@ const styles = StyleSheet.create({
     marginTop: 28,
   },
 
+  favoritesScroll: {
+    marginTop: 14,
+  },
 
+  favoriteCard: {
+    width: 100,
+    height: 100,
+    borderRadius: 18,
+    backgroundColor: 'white',
+    padding: 3,
+    marginRight: 14,
+    shadowColor: '#000',
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 3 },
+    elevation: 4,
+  },
 
-
-  // container: {
-  //   flex: 1,
-  //   alignItems: 'center',
-  // },
-  // profilebanner: {
-  //   width: '100%',
-  //   height: 200,
-  //   marginBottom: 20,
-  // },
-  // title: {
-  //   fontSize: 24,
-  //   fontWeight: 'bold',
-  // },
+  favoriteImage: {
+    width: '100%',
+    height: '100%',
+    borderRadius: 12,
+    resizeMode: 'cover',
+  },
 });
