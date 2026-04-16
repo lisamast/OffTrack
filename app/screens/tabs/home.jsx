@@ -10,31 +10,31 @@ export default function HomeScreen() {
       id: '1',
       title: 'Barcelona',
       image: require('../../../assets/images/Barcelona.png'),
-      date: '29 maart 2024 - april 2024',
+      date: '◷ maart 2024 - april 2024',
     },
     {
       id: '2',
       title: 'New York',
       image: require('../../../assets/images/NewYork.png'),
-      date: '16 januari 2022',
+      date: '◷ januari 2022 - februari 2022',
     },
     {
       id: '3',
       title: 'Tokyo',
       image: require('../../../assets/images/Tokyo.png'),
-      date: '16 november 2022 - 4 december 2022',
+      date: '◷ september 2022 - december 2022',
     },
     {
       id: '4',
       title: 'Rome',
       image: require('../../../assets/images/Rome.png'),
-      date: '15 maart 2023 - 20 maart 2023',
+      date: '◷ januari 2023 - februari 2023',
     },
     {
       id: '5',
       title: 'Chongqing',
       image: require('../../../assets/images/Chongqing.png'),
-      date: '12 januari 2023 - 2 februari 2023',
+      date: '◷ januari 2023 - februari 2023',
     },
   ];
 
@@ -43,12 +43,12 @@ export default function HomeScreen() {
       style={styles.card}
       onPress={() =>
         router.push({
-          pathname: '/screens/tripdetails',
+          pathname: '/screens/details',
           params: {
             id: item.id,
-            title: item.title,
-            image: item.image,
-            date: item.date,
+            // title: item.title,
+            // image: item.image,
+            // date: item.date,
           },
         })
       }
