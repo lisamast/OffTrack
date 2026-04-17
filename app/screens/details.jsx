@@ -1,33 +1,14 @@
-// import { View, Text, StyleSheet } from 'react-native';
-
-// export default function DetailScreen() {
-//   return (
-//     <View style={styles.container}>
-//       <Text style={styles.title}>Detail Pagina</Text>
-//     </View>
-//   );
-// }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-//   title: {
-//     fontSize: 24,
-//     fontWeight: 'bold',
-//   },
-// });
-
-
+import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, Pressable } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 
 export default function DetailScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
+  const [weather, setWeather] = useState(null);
+  const [loadingWeather, setLoadingWeather] = useState(true);
 
   const trips = [
     {
@@ -84,6 +65,32 @@ export default function DetailScreen() {
 
   const trip = trips.find((item) => item.id === id);
 
+  useEffect(() => {
+    const fetchWeather = async () => {
+      if (!trip) return;
+
+      const city = trip.title;
+      const apiKey = '9658fbf1da491812a7ce9cb1b78bae1d';
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric&lang=nl`;
+
+      try {
+        const response = await axios.get(url);
+
+        setWeather({
+          temp: Math.round(response.data.main.temp),
+          description: response.data.weather[0].description,
+        });
+      } catch (error) {
+        console.log('Weather error:', error);
+        setWeather(null);
+      } finally {
+        setLoadingWeather(false);
+      }
+    };
+
+    fetchWeather();
+  }, [trip]);
+
   if (!trip) {
     return (
       <View style={styles.notFoundContainer}>
@@ -96,9 +103,7 @@ export default function DetailScreen() {
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         <View style={styles.headerRow}>
-          <Text style={styles.title}>
-            {trip.emoji} {trip.title}
-          </Text>
+          <Text style={styles.title}>{trip.title}</Text>
 
           <Pressable onPress={() => router.replace('/screens/tabs/home')} style={styles.closeButton}>
             <Ionicons name="close" size={28} color="#111" />
@@ -117,6 +122,21 @@ export default function DetailScreen() {
 
           <Text style={[styles.dayTitle, styles.daySpacing]}>Day 2</Text>
           <Text style={styles.bodyText}>{trip.day2}</Text>
+
+          <View style={styles.weatherBox}>
+            <Text style={styles.weatherTitle}>Weer</Text>
+
+            {loadingWeather ? (
+              <Text style={styles.weatherText}>Weer laden...</Text>
+            ) : weather ? (
+              <>
+                <Text style={styles.weatherText}>🌡️ {weather.temp}°C</Text>
+                <Text style={styles.weatherText}>☁️ {weather.description}</Text>
+              </>
+            ) : (
+              <Text style={styles.weatherText}>Geen weerinformatie beschikbaar.</Text>
+            )}
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -196,5 +216,29 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: '700',
     color: '#111',
+  },
+  weatherBox: {
+    marginTop: 24,
+    backgroundColor: 'white',
+    borderRadius: 14,
+    padding: 16,
+    shadowColor: '#000',
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+  },
+
+  weatherTitle: {
+    fontSize: 16,
+    fontWeight: '800',
+    color: '#111',
+    marginBottom: 10,
+  },
+
+  weatherText: {
+    fontSize: 14,
+    color: '#222',
+    lineHeight: 22,
   },
 });
